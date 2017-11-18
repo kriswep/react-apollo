@@ -1,0 +1,3 @@
+targets:
+  prod: shared-eu-west-1/cja5ax5200akm0171cqfoc8ah
+  default: prod
