@@ -5,9 +5,7 @@ import gql from 'graphql-tag';
 import Link from './Link';
 
 // define query -> get all Links
-
 const ALL_LINKS_QUERY = gql`
-  # 2
   query AllLinksQuery {
     allLinks {
       id
