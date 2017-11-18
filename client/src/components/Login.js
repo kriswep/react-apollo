@@ -36,7 +36,7 @@ class Login extends Component {
 
   confirm = async () => {
     const { name, email, password } = this.state;
-    console.log(email, password);
+
     if (this.state.login) {
       const result = await this.props.authenticateUserMutation({
         variables: {
