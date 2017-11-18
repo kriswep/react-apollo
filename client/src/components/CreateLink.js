@@ -28,6 +28,8 @@ class CreateLink extends Component {
         url,
       },
     });
+    // redirect to homepage
+    this.props.history.push(`/`);
   };
 
   render() {
