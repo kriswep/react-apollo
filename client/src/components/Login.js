@@ -19,11 +19,9 @@ const SIGNUP_USER_MUTATION = gql`
 
 const AUTHENTICATE_USER_MUTATION = gql`
   mutation AuthenticateUserMutation($email: String!, $password: String!) {
-    authenticateUser(email: { email: $email, password: $password }) {
+    authenticateUser(email: $email, password: $password) {
       token
-      user {
-        id
-      }
+      id
     }
   }
 `;
@@ -38,6 +36,7 @@ class Login extends Component {
 
   confirm = async () => {
     const { name, email, password } = this.state;
+    console.log(email, password);
     if (this.state.login) {
       const result = await this.props.authenticateUserMutation({
         variables: {
