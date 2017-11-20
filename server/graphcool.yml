@@ -42,6 +42,7 @@ permissions:
   - operation: UsersLinks.connect
     authenticated: true
   - operation: User.read
+    fields: [id, name]
   - operation: UsersVotes.connect
     authenticated: true
   - operation: VotesOnLink.connect
