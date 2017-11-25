@@ -6,7 +6,9 @@ import { ApolloProvider } from 'react-apollo';
 import { ApolloClient } from 'apollo-client';
 import { HttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloLink } from 'apollo-client-preset';
+import { ApolloLink, split } from 'apollo-client-preset';
+import { WebSocketLink } from 'apollo-link-ws';
+import { getMainDefinition } from 'apollo-utilities';
 
 import App from './components/App';
 import { GC_AUTH_TOKEN } from './constants';
@@ -32,9 +34,29 @@ const middlewareAuthLink = new ApolloLink((operation, forward) => {
 
 const httpLinkWithAuthToken = middlewareAuthLink.concat(httpLink);
 
+// subscription link
+const wsLink = new WebSocketLink({
+  uri: `wss://subscriptions.graph.cool/v1/cja5ax5200akm0171cqfoc8ah`,
+  options: {
+    reconnect: true,
+    connectionParams: {
+      authToken: localStorage.getItem(GC_AUTH_TOKEN),
+    },
+  },
+});
+
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query);
+    return kind === 'OperationDefinition' && operation === 'subscription';
+  },
+  wsLink,
+  httpLinkWithAuthToken,
+);
+
 // setup client
 const client = new ApolloClient({
-  link: httpLinkWithAuthToken,
+  link,
   cache: new InMemoryCache(),
 });
 
